@@ -1,0 +1,104 @@
+---------------------------------------------------------
+                GIVEN DATA
+---------------------------------------------------------
+z = impedance (given)
+get admittance Y = 1/Z
+---------------------------------------------------------
+
+Data at bus 1  (slack bus)
+|v1| = 1.0
+d1 = 0
+
+---------------------------------------------------------
+
+Data at bus 2
+|v2| ->unknown
+d2 ->unknown
+l2 -> complex load at bus 2
+l2 = 0.9 + j0.5 -> 0.9 - active power demand
+                -> 0.5 - reactive power demand
+get complex load from user
+---------------------------------------------------------
+
+Data at bus 3
+l3 - > complex load at bus 3
+l3 = 0.7 + j0.4  -> 0.7 - active power demand
+                 -> 0.4 - reactive power demand
+Pg3 = 1.3 -> active power generation
+Qg3 -> reactive power is unknown
+|v3| = 1.01  -> magnitude of v3
+d3           ->angle of v3 is unknown
+
+---------------------------------------------------------
+*********************************************************
+---------------------------------------------------------
+ SOLUTION STEP WISE
+---------------------------------------------------------
+
+Step 1 :
+ known states   = [d1,v1,v3]
+
+ unknown states = [d2,d3,v2]
+ assign d2 = 0; d3 = 0 ; v2 = 1.0;
+
+ the corresponding power flow equation
+ for :
+        d2 -> P2
+        d3 -> P3
+        V2 -> Q2
+
+Step 2 :
+
+       form the admittance matrix
+
+Step 3:
+
+    f(P2) = 0
+    f(P3) = 0
+    f(Q2) = 0
+
+    general power flow equation
+    Pk =
+    Qk =
+
+    todo: keep in mind the index starts from 0 so subtract 1 from Theta coordinates
+
+    f(P2) = Y21 * V1 * V2 * [ COS(Theta21 + d1 - d2) ]
+          + Y22 * V2 * V2 * [ COS(Theta22 + d2 - d2) ]
+          + Y23 * V3 * V2 * [ COS(Theta23 + d3 - d2) ]
+          - P2
+
+    f(P3) = Y31 * V1 * V3 * [ COS(Theta21 + d1 - d3) ]
+          + Y32 * V2 * V3 * [ COS(Theta22 + d2 - d3) ]
+          + Y33 * V3 * V3 * [ COS(Theta23 + d3 - d3) ]
+          - P3
+
+    f(Q2) = -Y21 * V1 * V2 * [ SIN(Theta21 + d1 - d2) ]
+          -  Y22 * V2 * V2 * [ SIN(Theta22 + d2 - d2) ]
+          -  Y23 * V3 * V2 * [ SIN(Theta23 + d3 - d2) ]
+          -  Q3
+
+ Step 4 :
+
+        form jacobian matrix
+        Jacobian Matrix has 9 elements
+
+
+                     f(p2)       f(p3)       f(q2)
+                   __________________________________
+        J =        |          |          |          |
+                d2 | D f(P2)/ | D f(P2)/ | D f(P2)/ |
+                   |  D d2    |   D d3   |   D v2   |
+                   ----------------------------------
+                   |          |          |          |
+                d3 | D f(P3)/ | D f(P3)/ | D f(P3)/ |
+                   |  D d2    |   D d3   |   D v2   |
+                   ----------------------------------
+                   |          |          |          |
+                v2 | D f(Q2)/ | D f(Q2)/ | D f(Q2)/ |
+                   |  D d2    |   D d3   |   D v2   |
+                   ----------------------------------
+
+        Differentiated terms of jacobian matrix
+
+
